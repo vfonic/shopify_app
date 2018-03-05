@@ -24,36 +24,24 @@ module ShopifyApp
         redirect_to return_address
       else
         flash[:error] = I18n.t('could_not_log_in')
-        redirect_to login_url
+        redirect_to login_url_for_shop
       end
     end
 
     def destroy
       reset_session
       flash[:notice] = I18n.t('.logged_out')
-      redirect_to login_url
+      redirect_to login_url_for_shop
     end
 
     private
 
     def authenticate
-      puts '*' * 100
-      puts "authenticate"
-      puts '*' * 100
-      puts '*' * 100
-      puts "sanitized_shop_name.present?: #{sanitized_shop_name.present?}"
-      puts '*' * 100
       if sanitized_shop_name.present?
         session['shopify.omniauth_params'] = { shop: sanitized_shop_name }
-        puts '*' * 100
-        puts "fullpage_redirect_to: #{"#{main_app.root_path}auth/shopify"}"
-        puts '*' * 100
         fullpage_redirect_to "#{main_app.root_path}auth/shopify"
       else
         flash[:error] = I18n.t('invalid_shop_url')
-        puts '#' * 100
-        puts "redirect_to: #{return_address}"
-        puts '#' * 100
         redirect_to return_address
       end
     end

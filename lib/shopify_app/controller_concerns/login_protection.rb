@@ -41,17 +41,17 @@ module ShopifyApp
         head :unauthorized
       else
         session[:return_to] = request.fullpath if request.get?
-        redirect_to login_url
+        redirect_to login_url_for_shop
       end
     end
 
     def close_session
       session[:shopify] = nil
       session[:shopify_domain] = nil
-      redirect_to login_url
+      redirect_to login_url_for_shop
     end
 
-    def login_url
+    def login_url_for_shop
       url = ShopifyApp.configuration.login_url
 
       if params[:shop].present?
