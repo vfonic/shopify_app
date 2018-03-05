@@ -37,11 +37,23 @@ module ShopifyApp
     private
 
     def authenticate
+      puts '*' * 100
+      puts "authenticate"
+      puts '*' * 100
+      puts '*' * 100
+      puts "sanitized_shop_name.present?: #{sanitized_shop_name.present?}"
+      puts '*' * 100
       if sanitized_shop_name.present?
         session['shopify.omniauth_params'] = { shop: sanitized_shop_name }
+        puts '*' * 100
+        puts "fullpage_redirect_to: #{"#{main_app.root_path}auth/shopify"}"
+        puts '*' * 100
         fullpage_redirect_to "#{main_app.root_path}auth/shopify"
       else
         flash[:error] = I18n.t('invalid_shop_url')
+        puts '#' * 100
+        puts "redirect_to: #{return_address}"
+        puts '#' * 100
         redirect_to return_address
       end
     end
