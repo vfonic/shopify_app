@@ -38,8 +38,7 @@ module ShopifyApp
 
     def authenticate
       if sanitized_shop_name.present?
-        session['shopify.omniauth_params'] = { shop: sanitized_shop_name }
-        fullpage_redirect_to "#{main_app.root_path}auth/shopify"
+        fullpage_redirect_to "#{main_app.root_path}auth/shopify?shop=#{sanitized_shop_name}"
       else
         flash[:error] = I18n.t('invalid_shop_url')
         redirect_to return_address

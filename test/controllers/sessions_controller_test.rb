@@ -25,9 +25,9 @@ module ShopifyApp
 
     test "#new should authenticate the shop if a valid shop param exists non embedded" do
       ShopifyApp.configuration.embedded_app = false
+      auth_url = '/auth/shopify?shop=my-shop.myshopify.com'
       get :new, params: { shop: 'my-shop' }
-      assert_redirected_to '/auth/shopify'
-      assert_equal session['shopify.omniauth_params'][:shop], 'my-shop.myshopify.com'
+      assert_redirected_to auth_url
     end
 
     test "#new should trust the shop param over the current session" do
@@ -220,10 +220,8 @@ module ShopifyApp
     end
 
     def assert_redirected_to_authentication(shop_domain, response)
-      auth_url = "/auth/shopify".to_json
+      auth_url = "/auth/shopify?shop=#{shop_domain}".to_json
       target_origin = "https://#{shop_domain}".to_json
-
-      session_shop = session['shopify.omniauth_params'][:shop]
 
       post_message_handle = "message: 'Shopify.API.remoteRedirect'"
       post_message_link = "normalizedLink.href = #{auth_url}"
@@ -234,7 +232,6 @@ module ShopifyApp
       assert_includes response.body, post_message_link
       assert_includes response.body, post_message_data
       assert_includes response.body, post_message_call
-      assert_equal session_shop, shop_domain
     end
 
   end
