@@ -7,5 +7,6 @@ pkg/*
 doc/
 *.log
 *.sqlite3
-test/tmp/*
+# ignore sprockets cache
+/test/dummy/tmp
 .idea
